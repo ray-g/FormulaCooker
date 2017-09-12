@@ -20,7 +20,7 @@ def randomHueSaturationValue(image,
     return image
 
 
-def randomShiftScaleRotate(image, mask,
+def randomShiftScaleRotate(image, mask=None,
                            shift_limit=(-0.0625, 0.0625),
                            scale_limit=(-0.1, 0.1),
                            rotate_limit=(-45, 45), aspect_limit=(0, 0),
@@ -51,10 +51,11 @@ def randomShiftScaleRotate(image, mask,
                                     borderValue=(
                                         0, 0,
                                         0,))
-        mask = cv2.warpPerspective(mask, mat, (width, height), flags=cv2.INTER_LINEAR, borderMode=borderMode,
-                                   borderValue=(
-                                       0, 0,
-                                       0,))
+        if mask != None:
+            mask = cv2.warpPerspective(mask, mat, (width, height), flags=cv2.INTER_LINEAR, borderMode=borderMode,
+                                       borderValue=(
+                                           0, 0,
+                                           0,))
 
     if mask != None:
         return image, mask
@@ -66,6 +67,17 @@ def randomHorizontalFlip(image, mask=None, u=0.5):
         image = cv2.flip(image, 1)
         if mask != None:
             mask = cv2.flip(mask, 1)
+
+    if mask != None:
+        return image, mask
+    return image
+
+
+def randomVerticalFlip(image, mask=None, u=0.5):
+    if np.random.random() < u:
+        image = cv2.flip(image, 0)
+        if mask != None:
+            mask = cv2.flip(mask, 0)
 
     if mask != None:
         return image, mask
